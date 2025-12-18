@@ -1,15 +1,15 @@
-import Image from "next/image";
+import { AppLayout } from "@/components/layout/AppLayout";
+import { LaunchesList } from "@/components/launches/LaunchesList";
+import { LaunchDetailsPanel } from "@/components/launches/LaunchDetailsPanel";
+import { LaunchSelectionProvider } from "@/components/launches/LaunchSelectionContext";
 
 export default function Home() {
   return (
-    <main className="min-h-screen p-6">
-      <h1 className="text-2xl font-semibold tracking-tight">
-        SpaceX Mission Control
-      </h1>
-
-      <p className="mt-2 text-sm text-zinc-500">
-        Dashboard to explore SpaceX launches.
-      </p>
-    </main>
+    <LaunchSelectionProvider>
+      <AppLayout
+        sidebar={<LaunchesList />}
+        main={<LaunchDetailsPanel />}
+      />
+    </LaunchSelectionProvider>
   );
 }
