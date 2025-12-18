@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SpaceX Mission Control — Finsphera Frontend Challenge
+
+A small dashboard to explore SpaceX launches with a sidebar + details panel experience.
+Built with performance, resilience, and UX polish in mind.
+
+## Live Demo
+- Live URL: (add after deploy)
+- Repo URL: (this repository)
+
+---
+
+## Features
+- Launches list with search (filter by name)
+- Details panel with mission patch, status, description, and webcast embed (when available)
+- Loading / error / empty states (skeletons + retry)
+- Deep linking: selected launch persists via URL query param (`?launch=<id>`)
+- Smooth transitions (Framer Motion)
+- Keyboard accessible list items (tab + enter/space + focus styles)
+
+---
+
+## Tech Stack
+- Next.js (App Router)
+- TypeScript (strict)
+- Tailwind CSS
+- TanStack React Query (caching, retries, request states)
+- Framer Motion (micro-interactions)
+
+---
+
+## Architecture & Folder Structure
+
+**High-level approach:** UI is split into layout + feature modules. Data fetching is centralized and cached.
+
+
+### Why React Query?
+I used TanStack React Query to handle request states, caching, retries and to keep UI logic clean and resilient to failures. It also mirrors common production patterns.
+
+### Why URL-based selection?
+Persisting selection via query params improves UX (shareable state, refresh-safe) and matches how real dashboards behave.
+
+---
+
+## Design Decisions
+- **Sidebar + persistent details panel**: avoids modal fatigue and encourages exploration.
+- **Visual hierarchy**: mission name + status + date are surfaced first; long descriptions are secondary.
+- **Polish over complexity**: a few interactions (skeletons, animations, deep links) provide more value than excessive features.
+
+---
+
+## AI Usage (Transparency)
+I used AI tools (ChatGPT) to:
+- Brainstorm UI/UX layout patterns for a "dashboard + details panel" interaction model
+- Validate architecture decisions (React Query usage, selection state strategies)
+- Draft initial TypeScript interfaces and refactor suggestions
+- Generate first-pass code snippets which were then reviewed and adjusted manually
+
+---
+
+## Challenges & Trade-offs
+- SpaceX data does not always include complete fields (webcast/details). The UI accounts for missing data with graceful fallbacks.
+- I prioritized UX + code clarity over adding extra endpoints (rocket/launchpad names). With more time, I would populate related entities via the `/launches/query` endpoint using `populate`.
+
+---
+
+## If I Had More Time
+- Add rocket + launchpad names (populate / extra queries)
+- Improve accessibility even further (ARIA listbox pattern refinement)
+- Add unit tests for filtering, selection and details rendering
+- Dark mode toggle with persisted preference
+- Virtualize the sidebar list for very large datasets
+
+---
 
 ## Getting Started
-
-First, run the development server:
-
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
