@@ -13,6 +13,7 @@ export async function fetchLaunches(limit = 30): Promise<SpacexLaunch[]> {
       options: {
         sort: { date_utc: "desc" },
         limit,
+        populate: ["rocket", "launchpad"],
         select: {
           id: 1,
           name: 1,

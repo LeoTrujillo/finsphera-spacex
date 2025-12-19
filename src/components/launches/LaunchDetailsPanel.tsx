@@ -4,6 +4,25 @@ import { useLaunches } from "@/lib/useLaunches";
 import { useLaunchSelection } from "./LaunchSelectionContext";
 import { motion, AnimatePresence } from "framer-motion";
 
+const dateFormatter = new Intl.DateTimeFormat("en", {
+  dateStyle: "medium",
+  timeStyle: "short",
+});
+
+const getName = (value: unknown) => {
+  if (typeof value === "string") return value;
+  if (
+    value &&
+    typeof value === "object" &&
+    "name" in value &&
+    typeof (value as { name?: unknown }).name === "string"
+  ) {
+    const name = (value as { name?: string }).name;
+    return name && name.trim() ? name : "Unknown";
+  }
+  return "Unknown";
+};
+
 
 function toYouTubeEmbed(url: string) {
   try {
@@ -93,7 +112,13 @@ export function LaunchDetailsPanel() {
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
             <span className="rounded-full border px-2 py-1 text-zinc-700">
-              {new Date(launch.date_utc).toLocaleString()}
+              {dateFormatter.format(new Date(launch.date_utc))}
+            </span>
+            <span className="rounded-full border px-2 py-1 text-zinc-700">
+              Rocket: {getName(launch.rocket)}
+            </span>
+            <span className="rounded-full border px-2 py-1 text-zinc-700">
+              Launchpad: {getName(launch.launchpad)}
             </span>
 
             {launch.success === null ? (

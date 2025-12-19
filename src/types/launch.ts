@@ -4,6 +4,8 @@ export type SpacexLaunch = {
   details: string | null;
   date_utc: string;
   success: boolean | null;
+  rocket: string | { name?: string; id?: string };
+  launchpad: string | { name?: string; id?: string };
 
   links: {
     webcast: string | null;
@@ -13,7 +15,4 @@ export type SpacexLaunch = {
       large: string | null;
     };
   };
-
-  rocket: string;
-  launchpad: string;
 };

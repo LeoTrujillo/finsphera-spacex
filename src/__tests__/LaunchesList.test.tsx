@@ -23,6 +23,8 @@ const launches = [
     name: "Falcon 1",
     date_utc: "2024-01-01T00:00:00.000Z",
     success: true,
+    rocket: { name: "Falcon 1 Rocket" },
+    launchpad: { name: "Kwajalein Atoll" },
     links: { patch: { small: null }, webcast: null, wikipedia: null },
   },
   {
@@ -30,6 +32,8 @@ const launches = [
     name: "Starship",
     date_utc: "2025-02-02T00:00:00.000Z",
     success: null,
+    rocket: { name: "Starship" },
+    launchpad: { name: "Starbase" },
     links: { patch: { small: null }, webcast: null, wikipedia: null },
   },
 ];

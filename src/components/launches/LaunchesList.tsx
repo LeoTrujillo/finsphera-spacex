@@ -9,6 +9,24 @@ import { ThemeToggle } from "../ui/ThemeToggle";
 import { useTheme } from "next-themes";
 import { AnimatePresence, motion } from "framer-motion";
 
+const dateFormatter = new Intl.DateTimeFormat("en", {
+  dateStyle: "medium",
+  timeStyle: "short",
+});
+
+const getName = (value: unknown) => {
+  if (typeof value === "string") return value;
+  if (
+    value &&
+    typeof value === "object" &&
+    "name" in value &&
+    typeof (value as { name?: unknown }).name === "string"
+  ) {
+    const name = (value as { name?: string }).name;
+    return name && name.trim() ? name : "Unknown";
+  }
+  return "Unknown";
+};
 
 export function LaunchesList() {
   const { selectedId, select } = useLaunchSelection();
@@ -19,14 +37,14 @@ export function LaunchesList() {
   const queryClient = useQueryClient();
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
-  const headerClass = `sticky top-0 z-10 pb-3 backdrop-blur ${isDark ? "bg-zinc-950/90 text-zinc-50" : "bg-white/90 text-zinc-900"}`;
+  const headerClass = `sticky top-0 z-10 pb-3 backdrop-blur transition-colors ${isDark ? "bg-zinc-950/90 text-zinc-50" : "bg-white/90 text-zinc-900"}`;
   const headerSubtextClass = isDark ? "text-zinc-300" : "text-zinc-500";
-  const inputClass = `w-full rounded-xl border px-3 py-2 pr-10 text-sm outline-none focus:ring-2 ${
+  const inputClass = `w-full rounded-xl border px-3 py-2 pr-10 text-sm outline-none focus:ring-2 transition-colors ${
     isDark
       ? "border-zinc-800 bg-zinc-900 text-zinc-100 placeholder:text-zinc-500 focus:ring-zinc-700"
       : "border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-500 focus:ring-zinc-200"
   }`;
-  const itemBaseClass = `w-full cursor-pointer text-left rounded-xl border p-4 transition outline-none sm:scroll-mt-30 scroll-mt-35 focus-visible:ring-2 ${
+  const itemBaseClass = `w-full cursor-pointer text-left rounded-xl border p-4 transition-colors duration-200 outline-none sm:scroll-mt-30 scroll-mt-35 focus-visible:ring-2 ${
     isDark
       ? "border-zinc-800 bg-zinc-900/90 text-zinc-100 focus-visible:ring-zinc-700 hover:bg-zinc-800/90"
       : "border-zinc-200 bg-white/90 text-zinc-900 focus-visible:ring-zinc-300 hover:bg-white"
@@ -257,7 +275,15 @@ export function LaunchesList() {
                         isDark ? "text-zinc-400" : "text-zinc-500"
                       }`}
                     >
-                      {new Date(launch.date_utc).toLocaleString()}
+                      {dateFormatter.format(new Date(launch.date_utc))}
+                    </div>
+                    <div
+                      className={`mt-1 text-xs ${
+                        isDark ? "text-zinc-500" : "text-zinc-600"
+                      }`}
+                    >
+                      Rocket: {getName(launch.rocket)} · Launchpad:{" "}
+                      {getName(launch.launchpad)}
                     </div>
                   </div>
         

@@ -35,6 +35,8 @@ describe("LaunchDetailsPanel", () => {
       date_utc: "2024-03-03T00:00:00.000Z",
       success: true,
       details: "Test details",
+      rocket: { name: "Falcon Heavy" },
+      launchpad: { name: "LC-39A" },
       links: { patch: { small: null }, webcast: null, wikipedia: null },
     };
 
