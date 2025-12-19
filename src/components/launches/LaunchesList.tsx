@@ -49,7 +49,7 @@ export function LaunchesList() {
 
   if (isLoading) {
     return (
-      <div className="p-4 space-y-3">
+      <div className="p-4 space-y-3" aria-live="polite">
         <div className={headerClass}>
           <div className="relative flex flex-col gap-2 md:flex-row md:items-center">
             <div>
@@ -86,7 +86,7 @@ export function LaunchesList() {
 
   if (isError) {
     return (
-      <div className="p-4">
+      <div className="p-4" aria-live="polite">
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
           <div className="font-medium">Couldn’t load launches</div>
           <div className="mt-1 opacity-90">
@@ -140,6 +140,7 @@ export function LaunchesList() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search launches..."
+              aria-label="Search launches"
               className={inputClass}
             />
             {query && (
