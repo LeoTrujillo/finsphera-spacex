@@ -4,8 +4,8 @@ A small dashboard to explore SpaceX launches with a sidebar + details panel expe
 Built with performance, resilience, and UX polish in mind.
 
 ## Live Demo
-- Live URL: (add after deploy)
-- Repo URL: (this repository)
+- Live URL: [https://finsphera-spacex.vercel.app/](https://finsphera-spacex.vercel.app/)
+- Repo URL: [https://github.com/LeoTrujillo/finsphera-spacex](https://github.com/LeoTrujillo/finsphera-spacex)
 
 ---
 
