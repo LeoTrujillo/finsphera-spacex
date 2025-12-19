@@ -2,13 +2,13 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { LaunchDetailsPanel } from "@/components/launches/LaunchDetailsPanel";
 import { useLaunchSelection } from "@/components/launches/LaunchSelectionContext";
-import { useLaunches } from "@/lib/useLaunches";
+import { useLaunchDetails } from "@/lib/useLaunchDetails";
 
 vi.mock("@/components/launches/LaunchSelectionContext");
-vi.mock("@/lib/useLaunches");
+vi.mock("@/lib/useLaunchDetails");
 
 const useLaunchSelectionMock = vi.mocked(useLaunchSelection);
-const useLaunchesMock = vi.mocked(useLaunches);
+const useLaunchDetailsMock = vi.mocked(useLaunchDetails);
 
 describe("LaunchDetailsPanel", () => {
   it("renders prompt when there is no selection", () => {
@@ -16,9 +16,12 @@ describe("LaunchDetailsPanel", () => {
       selectedId: null,
       clear: vi.fn(),
     });
-    useLaunchesMock.mockReturnValue({
-      byId: new Map(),
+    useLaunchDetailsMock.mockReturnValue({
+      data: undefined,
       isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn(),
     });
 
     render(<LaunchDetailsPanel />);
@@ -44,9 +47,12 @@ describe("LaunchDetailsPanel", () => {
       selectedId: launch.id,
       clear: vi.fn(),
     });
-    useLaunchesMock.mockReturnValue({
-      byId: new Map([[launch.id, launch]]),
+    useLaunchDetailsMock.mockReturnValue({
+      data: launch,
       isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn(),
     });
 
     render(<LaunchDetailsPanel />);
