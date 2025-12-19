@@ -109,10 +109,13 @@ export function LaunchesList() {
   if (isError) {
     return (
       <div className="p-4" aria-live="polite">
-        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-          <div className="font-medium">Couldn’t load launches</div>
-          <div className="mt-1 opacity-90">
-            {error instanceof Error ? error.message : "Unknown error"}
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 space-y-2">
+          <div className="font-semibold">We couldn’t load launches.</div>
+          <div className="opacity-90">
+            {error instanceof Error ? error.message : "Something went wrong."}
+          </div>
+          <div className="text-xs text-red-700">
+            Please try again in a moment.
           </div>
   
           <button
@@ -127,17 +130,19 @@ export function LaunchesList() {
   }
 
   if (!data || data.length === 0) {
-        return (
-          <div className="rounded-xl border p-4 text-sm text-zinc-600">
-            No launches found.
-          </div>
-        );
-      }
+    return (
+      <div className="p-4">
+        <div className="rounded-xl border p-4 text-sm text-zinc-600">
+          No launches found.
+        </div>
+      </div>
+    );
+  }
       
     
-      if (!filtered.length) {
-        return (
-          <div className="p-4">
+  if (!filtered.length) {
+    return (
+      <div className="p-4">
         <div className={headerClass}>
           <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
             <div>
@@ -186,8 +191,15 @@ export function LaunchesList() {
         </motion.div>
       </div>
   
-        <div className="mt-4 rounded-xl border p-4 text-sm text-zinc-500">
-          No results for “{query}”.
+        <div className="mt-4 space-y-3 rounded-xl p-4 text-sm text-zinc-600">
+          <div>No results for “{query}”.</div>
+          <button
+            type="button"
+            onClick={() => setQuery("")}
+            className="w-full sm:w-auto rounded-lg cursor-pointer border px-3 py-2 text-xs font-medium transition text-center text-zinc-800 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-500 dark:hover:bg-zinc-900 dark:hover:text-zinc-50"
+          >
+            Reset search
+          </button>
         </div>
       </div>
     );
