@@ -37,7 +37,11 @@ export function LaunchesList() {
   const queryClient = useQueryClient();
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
-  const headerClass = `sticky top-0 z-10 pb-3 backdrop-blur transition-colors ${isDark ? "bg-zinc-950/90 text-zinc-50" : "bg-white/90 text-zinc-900"}`;
+  const headerClass = `sticky top-0 z-10 pb-3 backdrop-blur transition-colors border-b ${
+    isDark
+      ? "bg-zinc-950/95 text-zinc-50 border-zinc-800/70"
+      : "bg-white/95 text-zinc-900 border-zinc-200/80"
+  }`;
   const headerSubtextClass = isDark ? "text-zinc-300" : "text-zinc-500";
   const inputClass = `w-full rounded-xl border px-3 py-2 pr-10 text-sm outline-none focus:ring-2 transition-colors ${
     isDark
