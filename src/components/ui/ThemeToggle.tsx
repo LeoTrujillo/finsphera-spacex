@@ -16,10 +16,10 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
 
   const isDark = resolvedTheme === "dark";
   const base =
-    "flex items-center gap-2 rounded-xl border px-3 py-2 text-xs transition-colors shadow-sm";
+    "absolute top-0 right-0 z-30 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border text-xl shadow-md transition-colors self-end md:static md:h-11 md:w-11";
   const themeClasses = isDark
-    ? "border-zinc-700 bg-zinc-900 text-zinc-100 hover:bg-zinc-800"
-    : "border-zinc-200 bg-white text-zinc-900 hover:bg-zinc-50";
+    ? "border-zinc-700 bg-zinc-900/90 text-zinc-100 hover:bg-zinc-800/90"
+    : "border-zinc-200 bg-white/90 text-zinc-900 hover:bg-white";
 
   return (
     <button
@@ -29,8 +29,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
       aria-pressed={isDark}
       className={[base, themeClasses, className].filter(Boolean).join(" ")}
     >
-      <span>{isDark ? "🌙" : "☀️"}</span>
-      <span>{isDark ? "Dark mode" : "Light mode"}</span>
+      <span aria-hidden>{isDark ? "🌙" : "☀️"}</span>
     </button>
   );
 }

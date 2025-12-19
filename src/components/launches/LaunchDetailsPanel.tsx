@@ -125,7 +125,7 @@ export function LaunchDetailsPanel() {
       </header>
 
       {launch.links.webcast ? (
-        <div className="space-y-2">
+        <div className="space-y-2 w-full max-w-[min(2100px,95vw)] m-auto">
           <h3 className="text-sm font-semibold">Webcast</h3>
           <div className="aspect-video w-full overflow-hidden rounded-xl border bg-black">
             <iframe
