@@ -14,7 +14,9 @@ export function AppLayout({
   const [activePane, setActivePane] = useState<"list" | "details">("list");
   const { selectedId } = useLaunchSelection();
   const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const isDark = mounted && resolvedTheme === "dark";
 
   useEffect(() => {
     if (selectedId) setActivePane("details");
@@ -28,9 +30,10 @@ export function AppLayout({
   const inactiveTab = isDark
     ? "border-zinc-700 text-zinc-200 hover:bg-zinc-800"
     : "border-zinc-300 text-zinc-700 hover:bg-zinc-100";
-  const barClass = isDark
-    ? "border-zinc-800/70 bg-zinc-950/90 text-zinc-50"
-    : "border-zinc-200/80 bg-white/90 text-zinc-900";
+  const barClass =
+    isDark && mounted
+      ? "border-zinc-800/70 bg-zinc-950/90 text-zinc-50"
+      : "border-zinc-200/80 bg-white/90 text-zinc-900";
 
   return (
     <div className="flex h-screen flex-col md:flex-row">

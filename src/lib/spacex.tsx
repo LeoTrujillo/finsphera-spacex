@@ -35,3 +35,9 @@ export async function fetchLaunches(limit = 30): Promise<SpacexLaunch[]> {
   const json = await res.json();
   return (json?.docs ?? []) as SpacexLaunch[];
 }
+
+export async function fetchLaunchById(id: string): Promise<SpacexLaunch> {
+  const res = await fetch(`${SPACEX_API_BASE}/launches/${id}`);
+  if (!res.ok) throw new Error(`Launch fetch failed (HTTP ${res.status})`);
+  return (await res.json()) as SpacexLaunch;
+}

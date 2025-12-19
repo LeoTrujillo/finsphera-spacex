@@ -4,10 +4,10 @@ import { useMemo, useState, useEffect, useRef } from "react";
 import { useLaunchSelection } from "./LaunchSelectionContext";
 import { useLaunches } from "@/lib/useLaunches";
 import { useQueryClient } from "@tanstack/react-query";
-import { fetchLaunches } from "@/lib/spacex";
 import { ThemeToggle } from "../ui/ThemeToggle";
 import { useTheme } from "next-themes";
 import { AnimatePresence, motion } from "framer-motion";
+import { fetchLaunchById } from "@/lib/spacex";
 
 const dateFormatter = new Intl.DateTimeFormat("en", {
   dateStyle: "medium",
@@ -34,9 +34,11 @@ export function LaunchesList() {
   const [query, setQuery] = useState("");
   const itemRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const queryClient = useQueryClient();
+  const qc = useQueryClient();
   const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const isDark = mounted && resolvedTheme === "dark";
   const headerClass = `sticky top-0 z-10 pb-3 backdrop-blur transition-colors border-b ${
     isDark
       ? "bg-zinc-950/95 text-zinc-50 border-zinc-800/70"
@@ -204,6 +206,14 @@ export function LaunchesList() {
       </div>
     );
   }
+
+  const handleSelect = (id: string) => {
+    qc.prefetchQuery({
+      queryKey: ["launch", id],
+      queryFn: () => fetchLaunchById(id),
+    });
+    select(id);
+  };
   
 
   return (
@@ -268,20 +278,22 @@ export function LaunchesList() {
                 layout
                 type="button"
                 role="option"
-                onMouseEnter = {() => {
-                  queryClient.prefetchQuery({
-                    queryKey: ["launches", 30],
-                    queryFn: () => fetchLaunches(30),
-                  });
-                }}
-                onClick={() => select(launch.id)}
+                onMouseEnter={() => qc.prefetchQuery({
+                  queryKey: ["launch", launch.id],
+                  queryFn: () => fetchLaunchById(launch.id),
+                })}
+                onFocus={() => qc.prefetchQuery({
+                  queryKey: ["launch", launch.id],
+                  queryFn: () => fetchLaunchById(launch.id),
+                })}
+                onClick={() => handleSelect(launch.id)}
                 aria-selected={selectedId === launch.id}
                 className={`${itemBaseClass} ${
                   selectedId === launch.id ? itemActiveClass : ""
                 }`}
-                  ref={(el) => {
-                    itemRefs.current[launch.id] = el;
-                  }}
+                ref={(el) => {
+                  itemRefs.current[launch.id] = el;
+                }}
               >
                 <div className="flex items-center justify-between gap-4">
                   <div className="min-w-0">

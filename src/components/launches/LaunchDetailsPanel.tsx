@@ -1,7 +1,7 @@
 "use client";
 
-import { useLaunches } from "@/lib/useLaunches";
 import { useLaunchSelection } from "./LaunchSelectionContext";
+import { useLaunchDetails } from "@/lib/useLaunchDetails";
 import { motion, AnimatePresence } from "framer-motion";
 
 const dateFormatter = new Intl.DateTimeFormat("en", {
@@ -45,35 +45,76 @@ function toYouTubeEmbed(url: string) {
 
 export function LaunchDetailsPanel() {
   const { selectedId, clear } = useLaunchSelection();
-  const { byId, isLoading } = useLaunches(30);
+  const { data: launch, isLoading, isError, error, refetch } = useLaunchDetails(selectedId);
 
-  const launch = selectedId ? byId.get(selectedId) : undefined;
-
-  if (isLoading) {
-    return (
-      <div className="p-6 space-y-4">
-        <div className="h-6 w-2/3 animate-pulse rounded bg-zinc-200" />
-        <div className="h-4 w-1/3 animate-pulse rounded bg-zinc-200" />
-        <div className="aspect-video w-full animate-pulse rounded-xl bg-zinc-200" />
-        <div className="h-4 w-full animate-pulse rounded bg-zinc-200" />
-        <div className="h-4 w-5/6 animate-pulse rounded bg-zinc-200" />
-      </div>
-    );
-  }
-  
 
   if (!selectedId) {
     return (
-      <div className="flex h-full items-center justify-center text-sm text-zinc-500">
+      <div className="flex h-full items-center justify-center text-sm text-zinc-500 dark:text-zinc-400">
         Select a launch to see details
       </div>
     );
   }
 
+  if (isLoading) {
+    return (
+      <div className="p-6 space-y-4">
+        <div className="h-6 w-2/3 animate-pulse rounded bg-zinc-200 dark:bg-zinc-800" />
+        <div className="h-4 w-1/3 animate-pulse rounded bg-zinc-200 dark:bg-zinc-800" />
+        <div className="aspect-video w-full animate-pulse rounded-xl bg-zinc-200 dark:bg-zinc-800" />
+        <div className="h-4 w-full animate-pulse rounded bg-zinc-200 dark:bg-zinc-800" />
+        <div className="h-4 w-5/6 animate-pulse rounded bg-zinc-200 dark:bg-zinc-800" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="p-6">
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 dark:border-red-900/40 dark:bg-red-950/30 dark:text-red-200">
+          <div className="font-medium">Couldn’t load launch details</div>
+          <div className="mt-1 opacity-90">
+            {error instanceof Error ? error.message : "Unknown error"}
+          </div>
+
+          <div className="mt-3 flex gap-2">
+            <button
+              onClick={() => refetch()}
+              className="rounded-xl border bg-white px-3 py-2 text-xs hover:bg-zinc-50 dark:bg-zinc-950 dark:hover:bg-zinc-900"
+            >
+              Retry
+            </button>
+            <button
+              onClick={clear}
+              className="rounded-xl border px-3 py-2 text-xs hover:bg-zinc-50 dark:hover:bg-zinc-900"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
+
   if (!launch) {
     return (
-      <div className="p-6 text-sm text-zinc-500">
-        Launch not found
+      <div className="p-6 text-sm text-zinc-500 dark:text-zinc-400">
+        No data yet for this launch. Try again or clear selection.
+        <div className="mt-3 flex gap-2">
+          <button
+            onClick={() => refetch()}
+            className="rounded-xl border px-3 py-2 text-xs hover:bg-zinc-50 dark:hover:bg-zinc-900"
+          >
+            Retry
+          </button>
+          <button
+            onClick={clear}
+            className="rounded-xl border px-3 py-2 text-xs hover:bg-zinc-50 dark:hover:bg-zinc-900"
+          >
+            Clear
+          </button>
+        </div>
       </div>
     );
   }
