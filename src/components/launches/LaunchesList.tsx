@@ -5,6 +5,7 @@ import { useLaunchSelection } from "./LaunchSelectionContext";
 import { useLaunches } from "@/lib/useLaunches";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchLaunches } from "@/lib/spacex";
+import { ThemeToggle } from "../ui/ThemeToggle";
 
 
 export function LaunchesList() {
@@ -29,11 +30,17 @@ export function LaunchesList() {
   if (isLoading) {
     return (
       <div className="p-4 space-y-3">
-        <div className="sticky top-0 z-10 bg-white pb-3">
-          <div className="text-sm font-semibold">Launches</div>
-          <div className="mt-1 text-xs text-zinc-500">Loading…</div>
+        <div className="sticky top-0 z-10 pb-3 bg-white/90 backdrop-blur text-zinc-900 dark:bg-zinc-950/90 dark:text-zinc-50">
+          <div className="relative flex flex-col gap-2 md:flex-row md:items-center">
+            <div>
+              <div className="text-sm font-semibold">Launches</div>
+              <div className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-300">
+                Latest SpaceX launches (click to view details)
+              </div>
+            </div>
+          </div>
           <div className="mt-3">
-            <div className="w-full rounded-xl border px-3 py-2 text-sm text-zinc-400">
+            <div className="w-full rounded-xl border px-3 py-2 text-sm text-zinc-400 dark:border-zinc-800 dark:text-zinc-600">
               Search launches...
             </div>
           </div>
@@ -81,18 +88,23 @@ export function LaunchesList() {
   if (!filtered.length) {
     return (
       <div className="p-4">
-        <div className="sticky top-0 z-10 bg-white pb-3">
-          <h2 className="text-sm font-semibold tracking-tight">Launches</h2>
-          <p className="mt-1 text-xs text-zinc-500">
-            Latest SpaceX launches (click to view details)
-          </p>
-  
+        <div className="sticky top-0 z-10 pb-3 bg-white/90 backdrop-blur text-zinc-900 dark:bg-zinc-950/90 dark:text-zinc-50">
+          <div className="relative flex flex-col gap-2 md:flex-row md:items-center">
+            <div>
+              <h2 className="text-sm font-semibold tracking-tight">Launches</h2>
+              <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-300">
+                Latest SpaceX launches (click to view details)
+              </p>
+            </div>
+            <ThemeToggle className="order-first w-full md:order-none md:absolute md:right-0 md:top-0 md:w-auto" />
+          </div>
+
           <div className="mt-3">
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search launches..."
-              className="w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+              className="w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:ring-zinc-700"
             />
           </div>
         </div>
@@ -107,17 +119,22 @@ export function LaunchesList() {
 
   return (
     <div className="p-4">
-      <div className="sticky top-0 z-10 bg-zinc-50 pb-3">
-        <h2 className="text-sm font-semibold tracking-tight">Launches</h2>
-        <p className="mt-1 text-xs text-zinc-500">
-          Latest SpaceX launches (click to view details)
-        </p>
+      <div className="sticky top-0 z-10 pb-3 bg-white/90 backdrop-blur text-zinc-900 dark:bg-zinc-950/90 dark:text-zinc-50">
+        <div className="relative flex flex-col gap-2 md:flex-row md:items-center">
+          <div>
+            <h2 className="text-sm font-semibold tracking-tight">Launches</h2>
+            <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-300">
+              Latest SpaceX launches (click to view details)
+            </p>
+          </div>
+          <ThemeToggle className="order-first w-full md:order-none md:absolute md:right-0 md:top-0 md:w-auto" />
+        </div>
         <div className="mt-3">
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search launches..."
-            className="w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+            className="w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-200 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:ring-zinc-700"
           />
         </div>
       </div>
@@ -136,11 +153,12 @@ export function LaunchesList() {
               onClick={() => select(launch.id)}
               aria-selected={selectedId === launch.id}
               className={`w-full text-left rounded-xl border p-4 transition outline-none
-                focus-visible:ring-2 focus-visible:ring-zinc-300
+                focus-visible:ring-2 focus-visible:ring-zinc-300 dark:focus-visible:ring-zinc-700
+                bg-white text-zinc-900 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800
                 ${
                   selectedId === launch.id
-                    ? "border-zinc-900 bg-zinc-100"
-                    : "hover:bg-zinc-50"
+                    ? "border-zinc-900 bg-zinc-100 dark:border-zinc-200 dark:bg-zinc-800 dark:text-zinc-50"
+                    : ""
                 }`}
                 ref={(el) => {
                   itemRefs.current[launch.id] = el;
@@ -149,14 +167,14 @@ export function LaunchesList() {
               <div className="flex items-center justify-between gap-4">
                 <div className="min-w-0">
                   <div className="truncate font-medium">{launch.name}</div>
-                  <div className="mt-1 text-xs text-zinc-500">
+                  <div className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
                     {new Date(launch.date_utc).toLocaleString()}
                   </div>
                 </div>
           
                 <div className="shrink-0 text-xs">
                   {launch.success === null ? (
-                    <span className="rounded-full border px-2 py-1 text-zinc-600">
+                    <span className="rounded-full border px-2 py-1 text-zinc-600 dark:border-zinc-700 dark:text-zinc-300">
                       Unknown
                     </span>
                   ) : launch.success ? (
