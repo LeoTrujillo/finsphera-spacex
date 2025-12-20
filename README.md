@@ -1,7 +1,7 @@
 # SpaceX Mission Control — Finsphera Frontend Challenge
 
-A small dashboard to explore SpaceX launches with a sidebar + details panel experience.
-Built with performance, resilience, and UX polish in mind.
+A production-minded dashboard to explore SpaceX launches through a sidebar + details panel experience.
+The focus of this project is UX polish, resilience, and real-world frontend architecture rather than raw feature count.
 
 ## Live Demo
 - Live URL: [https://finsphera-spacex.vercel.app/](https://finsphera-spacex.vercel.app/)
@@ -9,67 +9,132 @@ Built with performance, resilience, and UX polish in mind.
 
 ---
 
+## Screenshots
+
+### Desktop
+![Desktop view](./public/screenshots/screen1.gif)
+
+### Mobile
+![Mobile view](./public/screenshots/mobile.png)
+
+---
+
+
 ## Features
-- Launches list with search (filter by name)
-- Details panel with mission patch, status, description, and webcast embed (when available)
-- Loading / error / empty states (skeletons + retry)
-- Deep linking: selected launch persists via URL query param (`?launch=<id>`)
-- Smooth transitions (Framer Motion)
-- Keyboard accessible list items (tab + enter/space + focus styles)
+- Launches list with search and filtering
+- Persistent details panel with mission patch, status, description, and webcast embed (when available)
+- Loading, error and empty states (skeletons + retry actions)
+- Deep linking via URL query params (`?launch=<id>`) with refresh and share support
+- Responsive layout with List / Details toggle on mobile
+- Dark mode with persisted user preference
+- Virtualized launches list for better performance and scalability
+- Keyboard accessible navigation (tab, enter/space, focus styles)
 
 ---
 
 ## Tech Stack
 - Next.js (App Router)
-- TypeScript (strict)
+- TypeScript (strict mode)
 - Tailwind CSS
-- TanStack React Query (caching, retries, request states)
+- TanStack React Query (data fetching, caching, retries)
+- TanStack Virtual (list virtualization)
 - Framer Motion (micro-interactions)
+- Vitest + React Testing Library (basic coverage)
 
 ---
-
 ## Architecture & Folder Structure
 
-**High-level approach:** UI is split into layout + feature modules. Data fetching is centralized and cached.
+**High-level approach:**  
+
+The UI is split into layout and feature modules, while data fetching and caching are centralized to keep components focused and predictable.
+
+```
+finsphera-spacex/
+├─ src/
+│  ├─ app/
+│  │  ├─ layout.tsx
+│  │  ├─ page.tsx
+│  │  └─ globals.css
+│  ├─ components/
+│  │  ├─ layout/
+│  │  │  └─ AppLayout.tsx
+│  │  ├─ launches/
+│  │  │  ├─ LaunchDetailsPanel.tsx
+│  │  │  ├─ LaunchSelectionContext.tsx
+│  │  │  └─ LaunchesList.tsx
+│  │  ├─ providers/
+│  │  │  └─ ThemeProvider.tsx
+│  │  └─ ui/
+│  │     └─ ThemeToggle.tsx
+│  ├─ lib/
+│  │  ├─ spacex.tsx
+│  │  ├─ format.ts
+│  │  ├─ useLaunchDetails.tsx
+│  │  └─ useLaunches.tsx
+│  └─ types/
+│     └─ launch.ts
+├─ public/
+│  └─ (assets)
+├─ tests/
+│  └─ (see src/__tests__)
+├─ vitest.config.ts
+└─ package.json
+```
 
 
 ### Why React Query?
-I used TanStack React Query to handle request states, caching, retries and to keep UI logic clean and resilient to failures. It also mirrors common production patterns.
+TanStack React Query is used to manage server state, caching, retries, and request lifecycle.  
+This keeps UI components simple and resilient to API failures while reflecting common production patterns.
 
 ### Why URL-based selection?
-Persisting selection via query params improves UX (shareable state, refresh-safe) and matches how real dashboards behave.
+Persisting the selected launch in the URL improves UX by allowing refresh-safe state, bookmarking, and sharing — behavior expected from real dashboards.
 
 ---
 
 ## Design Decisions
-- **Sidebar + persistent details panel**: avoids modal fatigue and encourages exploration.
-- **Visual hierarchy**: mission name + status + date are surfaced first; long descriptions are secondary.
-- **Polish over complexity**: a few interactions (skeletons, animations, deep links) provide more value than excessive features.
+- **Sidebar + persistent details panel** instead of modals to encourage exploration.
+- **Visual hierarchy first**: mission name, status, and date are prioritized over long descriptions.
+- **Polish over volume**: fewer features implemented carefully rather than many shallow ones.
 
 ---
 
 ## AI Usage (Transparency)
-I used AI tools (ChatGPT) to:
-- Brainstorm UI/UX layout patterns for a "dashboard + details panel" interaction model
-- Validate architecture decisions (React Query usage, selection state strategies)
-- Draft initial TypeScript interfaces and refactor suggestions
-- Generate first-pass code snippets which were then reviewed and adjusted manually
+
+I use AI as a productivity and reasoning tool, not as a replacement for implementation or decision-making.
+
+My typical workflow is:
+- I start by designing interfaces and TypeScript types manually.
+- Once the initial structure is in place, I use AI tools (such as Codex) as a second pass to review typings, suggest improvements, or point out alternative approaches.
+- Components are written from scratch. When refactoring is needed, I provide specific context and files so AI can help propose more maintainable and robust solutions.
+- All generated code is carefully reviewed, adjusted, or rewritten when necessary.
+- AI is also used to help debug issues and to generate initial test cases for components or features, which are then refined manually.
+
+This approach helps me reduce time spent on repetitive or mechanical tasks while keeping full control over architecture, code quality, and final decisions.
+
 
 ---
 
 ## Challenges & Trade-offs
-- SpaceX data does not always include complete fields (webcast/details). The UI accounts for missing data with graceful fallbacks.
-- I prioritized UX + code clarity over adding extra endpoints (rocket/launchpad names). With more time, I would populate related entities via the `/launches/query` endpoint using `populate`.
+- SpaceX data can be incomplete or inconsistent; the UI handles missing fields gracefully.
+- Virtualization adds complexity but significantly improves performance and scalability.
+- Related entities (rocket, launchpad details) could be expanded further using additional API calls.
+
+
+## Scalability Notes
+If this application were to grow:
+- Pagination or infinite scrolling could be introduced easily
+- API calls could be routed through a backend or edge layer
+- Monitoring, logging, and error tracking would be added
+- Design system abstractions could be extracted from existing UI components
 
 ---
 
-## If I Had More Time
-- Add rocket + launchpad names (populate / extra queries)
-- Improve accessibility even further (ARIA listbox pattern refinement)
-- Add unit tests for filtering, selection and details rendering
-- Dark mode toggle with persisted preference
-- Virtualize the sidebar list for very large datasets
+## Testing
+Basic tests were added to validate filtering, details rendering, and deep-link behavior.
 
+```
+pnpm test
+```
 ---
 
 ## Getting Started
