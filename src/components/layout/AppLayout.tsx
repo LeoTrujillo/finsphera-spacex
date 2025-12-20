@@ -63,7 +63,7 @@ export function AppLayout({
           activePane === "list" ? "block" : "hidden"
         } md:block md:w-80 md:shrink-0 md:border-b-0 md:border-r`}
       >
-        <div className="max-h-[92vh] overflow-auto md:h-screen md:max-h-none">
+        <div className="h-[calc(100vh-56px)] md:h-screen md:overflow-hidden">
           {sidebar}
         </div>
       </aside>
