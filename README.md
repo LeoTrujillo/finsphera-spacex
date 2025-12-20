@@ -15,7 +15,7 @@ The focus of this project is UX polish, resilience, and real-world frontend arch
 ![Desktop view](./public/screenshots/screen1.gif)
 
 ### Mobile
-![Mobile view](./public/screenshots/mobile.png)
+![Mobile view](./public/screenshots/screen2.gif)
 
 ---
 
