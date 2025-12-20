@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useLaunchSelection } from "../launches/LaunchSelectionContext";
 import { useTheme } from "next-themes";
+import { ThemeToggle } from "../ui/ThemeToggle";
 
 export function AppLayout({
   sidebar,
@@ -57,6 +58,7 @@ export function AppLayout({
           Details
         </button>
       </div>
+      <ThemeToggle className="fixed bottom-4 right-4 z-40 md:hidden" />
 
       <aside
         className={`${

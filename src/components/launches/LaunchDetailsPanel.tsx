@@ -3,25 +3,7 @@
 import { useLaunchSelection } from "./LaunchSelectionContext";
 import { useLaunchDetails } from "@/lib/useLaunchDetails";
 import { motion, AnimatePresence } from "framer-motion";
-
-const dateFormatter = new Intl.DateTimeFormat("en", {
-  dateStyle: "medium",
-  timeStyle: "short",
-});
-
-const getName = (value: unknown) => {
-  if (typeof value === "string") return value;
-  if (
-    value &&
-    typeof value === "object" &&
-    "name" in value &&
-    typeof (value as { name?: unknown }).name === "string"
-  ) {
-    const name = (value as { name?: string }).name;
-    return name && name.trim() ? name : "Unknown";
-  }
-  return "Unknown";
-};
+import { formatDate, getName } from "@/lib/format";
 
 
 function toYouTubeEmbed(url: string) {
@@ -129,7 +111,7 @@ export function LaunchDetailsPanel() {
         transition={{ duration: 0.18 }}
         className="p-6 space-y-6"
       >
-      <header className="flex items-start gap-4">
+      <header className="flex items-start gap-4 relative">
         {launch.links.patch.small ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -153,7 +135,7 @@ export function LaunchDetailsPanel() {
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
             <span className="rounded-full border px-2 py-1 text-zinc-700">
-              {dateFormatter.format(new Date(launch.date_utc))}
+              {formatDate(launch.date_utc)}
             </span>
             <span className="rounded-full border px-2 py-1 text-zinc-700">
               Rocket: {getName(launch.rocket)}

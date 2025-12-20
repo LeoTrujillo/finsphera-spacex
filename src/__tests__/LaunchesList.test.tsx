@@ -18,9 +18,20 @@ let mockItems: Array<{
 }> = [];
 vi.mock("@tanstack/react-virtual", () => ({
   useVirtualizer: () => ({
-    getVirtualItems: () => mockItems,
-    getTotalSize: () => mockItems.length * 120,
+    getVirtualItems: () =>
+      mockItems.length
+        ? mockItems
+        : launches.map((_, index) => {
+            const start = index * 128;
+            const size = 120;
+            return { index, start, size, end: start + size };
+          }),
+    getTotalSize: () =>
+      (mockItems.length
+        ? mockItems.length
+        : launches.length) * 128,
     scrollToIndex: vi.fn(),
+    measureElement: vi.fn(),
   }),
 }));
 vi.mock("next-themes", () => ({

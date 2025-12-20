@@ -16,7 +16,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
 
   const isDark = resolvedTheme === "dark";
   const base =
-    "absolute top-0 right-0 z-30 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border text-xl shadow-md transition-colors self-end md:static md:h-11 md:w-11";
+    "absolute -top-3 right-0 z-30 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border text-xl shadow-md transition-colors self-end md:static md:h-11 md:w-11";
   const themeClasses = isDark
     ? "border-zinc-700 bg-zinc-900/90 text-zinc-100 hover:bg-zinc-800/90"
     : "border-zinc-200 bg-white/90 text-zinc-900 hover:bg-white";

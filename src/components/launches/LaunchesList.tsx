@@ -9,25 +9,7 @@ import { ThemeToggle } from "../ui/ThemeToggle";
 import { useTheme } from "next-themes";
 import { AnimatePresence, motion } from "framer-motion";
 import { fetchLaunchById } from "@/lib/spacex";
-
-const dateFormatter = new Intl.DateTimeFormat("en", {
-  dateStyle: "medium",
-  timeStyle: "short",
-});
-
-const getName = (value: unknown) => {
-  if (typeof value === "string") return value;
-  if (
-    value &&
-    typeof value === "object" &&
-    "name" in value &&
-    typeof (value as { name?: unknown }).name === "string"
-  ) {
-    const name = (value as { name?: string }).name;
-    return name && name.trim() ? name : "Unknown";
-  }
-  return "Unknown";
-};
+import { formatDate, getName } from "@/lib/format";
 
 export function LaunchesList() {
   const { selectedId, select } = useLaunchSelection();
@@ -187,7 +169,7 @@ export function LaunchesList() {
                 Latest SpaceX launches (click to view details)
               </p>
             </div>
-            <ThemeToggle className="order-first md:order-none md:ml-auto" />
+            <ThemeToggle className="order-first hidden md:block md:order-none md:ml-auto" />
           </div>
 
           <motion.div
@@ -253,7 +235,7 @@ export function LaunchesList() {
                 Latest SpaceX launches (click to view details)
               </p>
             </div>
-            <ThemeToggle className="order-first md:order-none md:ml-auto" />
+            <ThemeToggle className="order-first hidden md:block md:order-none md:ml-auto" />
           </div>
           <motion.div
             initial={{ opacity: 0, y: -6 }}
@@ -347,7 +329,7 @@ export function LaunchesList() {
                             isDark ? "text-zinc-400" : "text-zinc-500"
                           }`}
                         >
-                          {dateFormatter.format(new Date(launch.date_utc))}
+                          {formatDate(launch.date_utc)}
                         </div>
                         <div
                           className={`mt-1 text-xs ${
