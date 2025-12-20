@@ -222,7 +222,7 @@ export function LaunchesList() {
     );
   }
 
-  const virtualItems = rowVirtualizer.getVirtualItems();
+  const virtualItems = mounted ? rowVirtualizer.getVirtualItems() : [];
 
   return (
     <div ref={scrollParentRef} className="h-full overflow-auto">
