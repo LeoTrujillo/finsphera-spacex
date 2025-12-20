@@ -102,15 +102,16 @@ export function LaunchDetailsPanel() {
   }
 
   return (
-    <AnimatePresence mode="wait">      
+    <AnimatePresence mode="wait">
       <motion.div
         key={launch.id}
-        initial={{opacity: 0, y: 8}}
+        initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -8 }}
         transition={{ duration: 0.18 }}
-        className="p-6 space-y-6"
+        className="p-6"
       >
+        <div className="mx-auto flex w-full flex-col gap-6 md:max-w-5xl lg:max-w-6xl xl:max-w-7xl">
       <header className="flex items-start gap-4 relative">
         {launch.links.patch.small ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -172,31 +173,32 @@ export function LaunchDetailsPanel() {
         </div>
       </header>
 
-      {launch.links.webcast ? (
-        <div className="space-y-2 w-full max-w-[min(2100px,95vw)] m-auto">
-          <h3 className="text-sm font-semibold">Webcast</h3>
-          <div className="aspect-video w-full overflow-hidden rounded-xl border bg-black">
-            <iframe
-              className="h-full w-full"
-              src={toYouTubeEmbed(launch.links.webcast)}
-              title={`${launch.name} webcast`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
+        {launch.links.webcast ? (
+          <div className="space-y-2 w-full">
+            <h3 className="text-sm font-semibold">Webcast</h3>
+            <div className="aspect-video w-full overflow-hidden border bg-black md:rounded-xl md:border md:bg-black md:max-w-[min(2150px,95vw)]">
+              <iframe
+                className="h-full w-full"
+                src={toYouTubeEmbed(launch.links.webcast)}
+                title={`${launch.name} webcast`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className="rounded-xl border p-4 text-sm text-zinc-500">
-          No webcast available for this launch.
-        </div>
-      )}
+        ) : (
+          <div className="rounded-xl border p-4 text-sm text-zinc-500">
+            No webcast available for this launch.
+          </div>
+        )}
 
-      <section className="space-y-2">
-        <h3 className="text-sm font-semibold">Details</h3>
-        <p className="text-sm text-zinc-600">
-          {launch.details ?? "No description provided by SpaceX."}
-        </p>
-      </section>
+        <section className="space-y-2">
+          <h3 className="text-sm font-semibold">Details</h3>
+          <p className="text-sm text-zinc-600">
+            {launch.details ?? "No description provided by SpaceX."}
+          </p>
+        </section>
+        </div>
       </motion.div>
     </AnimatePresence>
   );
