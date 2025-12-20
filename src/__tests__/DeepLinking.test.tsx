@@ -12,6 +12,19 @@ vi.mock("@/lib/useLaunchDetails");
 vi.mock("@tanstack/react-query", () => ({
   useQueryClient: () => ({ prefetchQuery: vi.fn() }),
 }));
+let mockItems: Array<{
+  index: number;
+  start: number;
+  size: number;
+  end: number;
+}> = [];
+vi.mock("@tanstack/react-virtual", () => ({
+  useVirtualizer: () => ({
+    getVirtualItems: () => mockItems,
+    getTotalSize: () => mockItems.length * 120,
+    scrollToIndex: vi.fn(),
+  }),
+}));
 vi.mock("next-themes", () => ({
   useTheme: () => ({ resolvedTheme: "light" }),
 }));
@@ -44,6 +57,10 @@ describe("Deep linking", () => {
       error: null,
       refetch: vi.fn(),
     });
+
+    mockItems = [
+      { index: 0, start: 0, size: 120, end: 120 },
+    ];
 
     useLaunchDetailsMock.mockReturnValue({
       data: launch,

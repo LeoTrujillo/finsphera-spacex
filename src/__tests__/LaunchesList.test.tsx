@@ -10,6 +10,19 @@ vi.mock("@/components/launches/LaunchSelectionContext");
 vi.mock("@tanstack/react-query", () => ({
   useQueryClient: () => ({ prefetchQuery: vi.fn() }),
 }));
+let mockItems: Array<{
+  index: number;
+  start: number;
+  size: number;
+  end: number;
+}> = [];
+vi.mock("@tanstack/react-virtual", () => ({
+  useVirtualizer: () => ({
+    getVirtualItems: () => mockItems,
+    getTotalSize: () => mockItems.length * 120,
+    scrollToIndex: vi.fn(),
+  }),
+}));
 vi.mock("next-themes", () => ({
   useTheme: () => ({ resolvedTheme: "light" }),
 }));
@@ -49,6 +62,12 @@ describe("LaunchesList", () => {
       isError: false,
       error: null,
       refetch: vi.fn(),
+    });
+
+    mockItems = launches.map((_, index) => {
+      const start = index * 128;
+      const size = 120;
+      return { index, start, size, end: start + size };
     });
   });
 
